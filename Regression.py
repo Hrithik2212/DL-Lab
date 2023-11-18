@@ -20,3 +20,25 @@ md1=SGDRegressor(alpha=0.01,max_iter=300)
 md1.fit(X_train,y_train)
 predl=md1.predict(X_test)
 print(np.sqrt(mean_squared_error(y_test,predl)))
+
+
+# Custom Stochastic Gradient Descent
+def CustomSGD(X_train,y_train,learning_rate,n_iter,batch_size):
+  w=np.zeros(shape=(1,X_train.shape[1]))
+  b=0
+  cur_iter=1
+  while(cur_iter <= n_iter):
+    y=np.array(y_train)
+    x=np.array(X_train)
+    w_gradient=np.zeros(shape=(1,X_train.shape[1]))
+    b_gradient=0
+
+    for i in range(batch_size):
+      prediction=np.dot(w,x[i])+b
+      w_gradient=w_gradient+(-2)*x[i]*(y[i]-(prediction))
+      b_gradient=b_gradient+(-2)*(y[i]-(prediction))
+
+    W = w-learning_rate*(w_gradient/batch_size)
+    b = b-learning_rate*(b_gradient/batch_size)
+    cur_iter=cur_iter+1
+  return w,b
